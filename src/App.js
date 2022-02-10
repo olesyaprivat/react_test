@@ -50,7 +50,7 @@ function App() {
  <div className="d-flex w-100 p-3">
    <div className="w-50 pe-5">
     {
-      isActiveForm ? <CreateForm maxLengthTitle={100} createPost={createPost} savePost={savePost} post={activePost} cancelForm={cancelForm}/>
+      isActiveForm ? <CreateForm createPost={createPost} savePost={savePost} post={activePost} cancelForm={cancelForm}/>
       : <PostBlock post={activePost} />
     }
     </div>
