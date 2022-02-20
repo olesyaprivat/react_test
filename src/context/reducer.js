@@ -1,30 +1,28 @@
-import React from "react";
-export const ContextApp = React.createContext();
-
 export const initialState = {
-    notes: [],
-    activeNote: {},
-    isActiveForm: true,
+  notes: [],
+  activeNote: {},
+  isActiveForm: true,
 };
-
 export const  notesReducer = (state, action) => {
     switch (action.type) {
+      
       case "toogleNoteForm":
         return {
           ...state,
-          isActiveForm: action.payload.isActive,
-          activeNote: action.payload.activeNote || {},
-        };
+          isActiveForm: action.isActiveForm,
+          activeNote: action.activeNote || {},
+        }
       case "removeNote":
+        
         return {
           ...state,
-          notes: state.notes.filter(el => el.id !== action.payload.id),
+          notes: state.notes.filter(el => el.id !== action.noteId),
           activeNote: {}
         };
         case "createNote":
           return {
             ...state,
-            notes: [...state.notes, action.payload.note],
+            notes: [...state.notes, action.note],
           };
           case "saveNote":
             return {
@@ -36,3 +34,34 @@ export const  notesReducer = (state, action) => {
       }
     }
   }
+  export const toogleNoteForm = (dispatch) => (isActiveForm, activeNote) =>
+  {
+    return dispatch({
+      type: "toogleNoteForm",
+      isActiveForm,
+      activeNote
+    });
+  }
+  export const removeNote = (dispatch) => (noteId) =>
+  {
+    return dispatch({
+      type: "removeNote",
+      noteId
+    });
+  }
+  export const createNote = (dispatch) => (note) =>
+  {
+    return dispatch({
+      type: "createNote",
+      note
+    });
+  }
+  export const saveNote = (dispatch) => (isActiveForm, note) =>
+  {
+    return dispatch({
+      type: "saveNote",
+      isActiveForm,
+      note
+    });
+  }
+

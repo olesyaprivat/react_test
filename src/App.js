@@ -1,31 +1,35 @@
 
 
-import { useEffect, useReducer } from "react";
-import {ContextApp, initialState, notesReducer} from "./context/reducer";
+import { useReducer } from "react";
+import {initialState, notesReducer} from "./context/reducer";
 import CreateForm from "./components/CreateForm";
 import NotesList from "./components/NotesList";
 import NoteBlock from "./components/NoteBlock";
-function App() {
+import { NoteListContext } from './context/context';
+import {useListState} from "./context/context.js";
 
-  const [state, dispatch] = useReducer(notesReducer, initialState);
-
-  useEffect(()=> {
-    document.querySelectorAll('a').length && document.querySelectorAll('a').forEach(el => {
-      el.addEventListener('click', () => {
-        alert('Do you really want to follow the link?')
-      })
-    })
-  }, [state.notes, state.isActiveForm])
-
+const NotesListView = () => {
+  const [state] = useListState();
   return (
-    <ContextApp.Provider value={{dispatch, state}}>
       <div className="d-flex w-100 p-3">
         <div className="w-50 pe-5">
-          { state.isActiveForm ? <CreateForm/> : <NoteBlock/> }
+        { state.isActiveForm ? <CreateForm/> : <NoteBlock/> }
         </div>
-        <NotesList />
+        <NotesList  />
       </div>
-    </ContextApp.Provider>
+  );
+};
+
+export const NoteListProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(notesReducer, initialState);
+  return <NoteListContext.Provider value={[state, dispatch]}>{children}</NoteListContext.Provider>;
+};
+
+function App() {
+  return (
+    <NoteListProvider>
+      <NotesListView/>
+    </NoteListProvider>
   );
 }
 
